@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:4.0
+FN:Kevin Johnson
+N:Johnson;Kevin;;;
+TITLE:Marketing Manager
+ORG:Cool Co.
+TEL;TYPE=WORK,VOICE:+1234567890
+EMAIL;TYPE=WORK:kevin@coolco.com
+URL;TYPE=Website:https://coolco.com
+ADR;TYPE=WORK:;;;San Francisco, CA;;;
+URL;TYPE=LinkedIn:https://linkedin.com/in/kevinjohnson
+END:VCARD
