@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Bento Grid Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!--[if mso]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+    
+    <style type="text/css">
+        /* Base Reset */
+        body, table, td, p, a { 
+            -webkit-text-size-adjust: 100%; 
+            -ms-text-size-adjust: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        
+        table, td { 
+            mso-table-lspace: 0pt; 
+            mso-table-rspace: 0pt; 
+        }
+        
+        img { 
+            -ms-interpolation-mode: bicubic; 
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            display: block;
+        }
+        
+        /* Container */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f9fafb;
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff;
+            padding: 60px 30px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            opacity: 0.95;
+        }
+        
+        /* Bento Grid - Wireframe Structure */
+        .bento-container {
+            padding: 32px 20px;
+            background: #f9fafb;
+        }
+        
+        .bento-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 16px;
+            border-spacing: 0;
+        }
+        
+        .bento-item {
+            display: inline-block;
+            vertical-align: top;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        /* Grid Sizes - Wireframe */
+        .bento-large {
+            width: 100%;
+            height: 340px;
+            margin-bottom: 20px;
+        }
+        
+        .bento-medium {
+            width: 48.5%;
+            height: 260px;
+            margin-right: 3%;
+        }
+        
+        .bento-medium:last-child {
+            margin-right: 0;
+        }
+        
+        .bento-small {
+            width: 31.33%;
+            height: 220px;
+            margin-right: 3%;
+        }
+        
+        .bento-small:last-child {
+            margin-right: 0;
+        }
+        
+        /* Images */
+        .bento-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Overlay */
+        .bento-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(17, 24, 39, 0.95) 0%, rgba(0,0,0,0) 100%);
+            padding: 20px;
+            color: white;
+        }
+        
+        .bento-category {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .category-featured { background: rgba(99, 102, 241, 0.9); }
+        .category-ui { background: rgba(59, 130, 246, 0.9); }
+        .category-branding { background: rgba(168, 85, 247, 0.9); }
+        .category-print { background: rgba(220, 38, 38, 0.9); }
+        .category-packaging { background: rgba(22, 163, 74, 0.9); }
+        .category-illustration { background: rgba(245, 158, 11, 0.9); }
+        
+        .bento-overlay h3 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .bento-overlay p {
+            margin: 0;
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        /* CTA */
+        .cta-section {
+            background: #ffffff;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 24px;
+            margin: 0 0 12px 0;
+            color: #111827;
+        }
+        
+        .cta-section p {
+            margin: 0 0 24px 0;
+            color: #6b7280;
+            font-size: 15px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #4f46e5;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #111827;
+            color: #9ca3af;
+            padding: 30px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .footer a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+        
+        /* Mobile - Wireframe Structure */
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            
+            .hero {
+                padding: 40px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 26px;
+            }
+            
+            .hero p {
+                font-size: 15px;
+            }
+            
+            .bento-container {
+                padding: 20px 15px;
+            }
+            
+            .bento-row {
+                display: block !important;
+                margin-bottom: 0;
+            }
+            
+            .bento-item {
+                width: 100% !important;
+                margin-right: 0 !important;
+                margin-bottom: 16px;
+                height: 240px !important;
+            }
+            
+            .bento-large {
+                height: 280px !important;
+            }
+            
+            .bento-medium {
+                height: 220px !important;
+            }
+            
+            .bento-small {
+                height: 200px !important;
+            }
+            
+            .bento-overlay {
+                padding: 16px;
+            }
+            
+            .bento-overlay h3 {
+                font-size: 16px;
+            }
+            
+            .bento-category {
+                font-size: 9px;
+                padding: 3px 8px;
+            }
+            
+            .cta-section {
+                padding: 40px 20px;
+            }
+            
+            .cta-button {
+                display: block;
+                width: 100%;
+            }
+        }
+        
+        @media screen and (max-width: 375px) {
+            .bento-item {
+                height: 200px !important;
+                margin-bottom: 12px;
+            }
+            
+            .bento-large {
+                height: 240px !important;
+            }
+        }
+        
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #f9fafb;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="email-container">
+        <!-- Hero -->
+        <tr>
+            <td class="hero">
+                <h1>Creative Portfolio 2024</h1>
+                <p>Showcasing exceptional design work across branding, digital, and print</p>
+            </td>
+        </tr>
+        
+        <!-- Bento Grid - Wireframe: 1 Large, 2 Medium, 3 Small -->
+        <tr>
+            <td class="bento-container">
+                <!-- Row 1: Large Featured -->
+                <div class="bento-row">
+                    <div class="bento-item bento-large">
+                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=680&fit=crop" alt="Featured Project">
+                        <div class="bento-overlay">
+                            <span class="bento-category category-featured">Featured Work</span>
+                            <h3>Nova Brand Identity</h3>
+                            <p>Complete brand identity system including logo, color palette, and guidelines</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 2: Two Medium -->
+                <div class="bento-row">
+                    <div class="bento-item bento-medium">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=520&fit=crop" alt="UI Design">
+                        <div class="bento-overlay">
+                            <span class="bento-category category-ui">UI/UX Design</span>
+                            <h3>Fintech Dashboard</h3>
+                            <p>Modern financial dashboard with real-time analytics</p>
+                        </div>
+                    </div>
+                    <div class="bento-item bento-medium">
+                        <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&h=520&fit=crop" alt="Branding">
+                        <div class="bento-overlay">
+                            <span class="bento-category category-branding">Brand Identity</span>
+                            <h3>Organic Skincare</h3>
+                            <p>Eco-friendly packaging and brand strategy</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 3: Three Small -->
+                <div class="bento-row">
+                    <div class="bento-item bento-small">
+                        <img src="https://images.unsplash.com/photo-1581092160561-6b3a5e8f1d4a?w=400&h=440&fit=crop" alt="Print">
+                        <div class="bento-overlay">
+                            <span class="bento-category category-print">Print Design</span>
+                            <h3>Magazine</h3>
+                        </div>
+                    </div>
+                    <div class="bento-item bento-small">
+                        <img src="https://images.unsplash.com/photo-1581092162429-8c2bd2f4d1e1?w=400&h=440&fit=crop" alt="Packaging">
+                        <div class="bento-overlay">
+                            <span class="bento-category category-packaging">Packaging</span>
+                            <h3>Product Box</h3>
+                        </div>
+                    </div>
+                    <div class="bento-item bento-small">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=440&fit=crop" alt="Illustration">
+                        <div class="bento-overlay">
+                            <span class="bento-category category-illustration">Illustration</span>
+                            <h3>Characters</h3>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        <!-- CTA -->
+        <tr>
+            <td class="cta-section">
+                <h2>Let's Work Together</h2>
+                <p>Ready to bring your vision to life?</p>
+                <a href="#" class="cta-button">View Full Portfolio</a>
+            </td>
+        </tr>
+        
+        <!-- Footer -->
+        <tr>
+            <td class="footer">
+                <p>© 2024 Creative Studio. All rights reserved.</p>
+                <p><a href="#">Unsubscribe</a> | <a href="#">View in Browser</a></p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

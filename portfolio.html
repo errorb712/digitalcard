@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Design Portfolio - Bento Gallery</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!--[if mso]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+    
+    <style type="text/css">
+        /* Base Styles */
+        body, table, td, p, a { 
+            -webkit-text-size-adjust: 100%; 
+            -ms-text-size-adjust: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        
+        table, td { 
+            mso-table-lspace: 0pt; 
+            mso-table-rspace: 0pt; 
+        }
+        
+        img { 
+            -ms-interpolation-mode: bicubic; 
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            display: block;
+        }
+        
+        /* Container */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: #ffffff;
+            padding: 60px 30px 40px;
+            text-align: center;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            line-height: 1.2;
+            color: #111827;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero .subtitle {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0 0 8px 0;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .hero .tagline {
+            font-size: 14px;
+            color: #9ca3af;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            background: #f9fafb;
+            padding: 24px 30px;
+            text-align: center;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .stat {
+            display: inline-block;
+            margin: 0 16px;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #4f46e5;
+            display: block;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+        
+        /* Portfolio Gallery - Bento Grid */
+        .bento-container {
+            padding: 32px 20px;
+            background: #ffffff;
+        }
+        
+        .bento-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 16px;
+            border-spacing: 0;
+        }
+        
+        .bento-item {
+            display: inline-block;
+            vertical-align: top;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .bento-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: #4f46e5;
+        }
+        
+        /* Grid Sizes - Wireframe Structure */
+        .bento-large {
+            width: 100%;
+            height: 340px;
+            margin-bottom: 20px;
+        }
+        
+        .bento-medium {
+            width: 48.5%;
+            height: 260px;
+            margin-right: 3%;
+        }
+        
+        .bento-medium:last-child {
+            margin-right: 0;
+        }
+        
+        .bento-small {
+            width: 31.33%;
+            height: 220px;
+            margin-right: 3%;
+        }
+        
+        .bento-small:last-child {
+            margin-right: 0;
+        }
+        
+        /* Overlay for Portfolio Info */
+        .bento-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(17, 24, 39, 0.95) 0%, rgba(0,0,0,0) 100%);
+            padding: 20px;
+            color: white;
+        }
+        
+        .project-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .project-number {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #4f46e5;
+            background: rgba(255,255,255,0.95);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .project-category {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        /* Category Colors */
+        .cat-branding { background: rgba(99, 102, 241, 0.85) !important; }
+        .cat-ui { background: rgba(59, 130, 246, 0.85) !important; }
+        .cat-frontend { background: rgba(16, 185, 129, 0.85) !important; }
+        .cat-fullstack { background: rgba(168, 85, 247, 0.85) !important; }
+        .cat-mobile { background: rgba(236, 72, 153, 0.85) !important; }
+        .cat-web { background: rgba(251, 146, 60, 0.85) !important; }
+        
+        .bento-overlay h3 {
+            margin: 0 0 6px 0;
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+        
+        .bento-overlay p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.4;
+            color: #e5e7eb;
+        }
+        
+        .project-tech {
+            margin-top: 8px;
+            font-size: 10px;
+            color: #9ca3af;
+            opacity: 0.8;
+        }
+        
+        /* Impact Metrics */
+        .impact-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: #10b981;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: #f9fafb;
+            padding: 50px 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .cta-section h2 {
+            font-size: 28px;
+            margin: 0 0 12px 0;
+            color: #111827;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .cta-section p {
+            margin: 0 0 24px 0;
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #4f46e5;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 36px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+            transition: background 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background: #4338ca;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #111827;
+            color: #9ca3af;
+            padding: 32px 30px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        
+        .footer a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer-links {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            margin: 0 10px;
+        }
+        
+        /* Mobile Optimizations */
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            
+            .hero {
+                padding: 40px 20px 30px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero .subtitle {
+                font-size: 15px;
+            }
+            
+            .hero .tagline {
+                font-size: 13px;
+            }
+            
+            .stats-bar {
+                padding: 20px 15px;
+            }
+            
+            .stat {
+                margin: 0 10px;
+            }
+            
+            .stat-number {
+                font-size: 24px;
+            }
+            
+            .stat-label {
+                font-size: 10px;
+            }
+            
+            .bento-container {
+                padding: 20px 15px;
+            }
+            
+            .bento-row {
+                display: block !important;
+                margin-bottom: 0;
+            }
+            
+            .bento-item {
+                width: 100% !important;
+                margin-right: 0 !important;
+                margin-bottom: 16px;
+                height: 240px !important;
+            }
+            
+            .bento-large {
+                height: 280px !important;
+            }
+            
+            .bento-medium {
+                height: 220px !important;
+            }
+            
+            .bento-small {
+                height: 200px !important;
+            }
+            
+            .bento-overlay {
+                padding: 16px;
+            }
+            
+            .bento-overlay h3 {
+                font-size: 15px;
+            }
+            
+            .project-number,
+            .project-category {
+                font-size: 8px;
+                padding: 3px 6px;
+            }
+            
+            .bento-overlay p {
+                font-size: 11px;
+            }
+            
+            .project-tech {
+                font-size: 9px;
+            }
+            
+            .impact-badge {
+                font-size: 9px;
+            }
+            
+            .bento-item:hover {
+                transform: none;
+            }
+            
+            .cta-section {
+                padding: 40px 20px;
+            }
+            
+            .cta-section h2 {
+                font-size: 24px;
+            }
+            
+            .cta-button {
+                display: block;
+                width: 100%;
+            }
+            
+            .footer {
+                padding: 28px 20px;
+            }
+        }
+        
+        @media screen and (max-width: 375px) {
+            .bento-item {
+                height: 200px !important;
+                margin-bottom: 12px;
+            }
+            
+            .bento-large {
+                height: 240px !important;
+            }
+        }
+        
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #ffffff;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" class="email-container">
+        <!-- Hero -->
+        <tr>
+            <td class="hero">
+                <h1>Design Portfolio</h1>
+                <p class="subtitle">IT-educated generalist turned UI/UX designer</p>
+                <p class="tagline">Leveraging computational thinking to create efficient, user-focused experiences</p>
+            </td>
+        </tr>
+        
+        <!-- Stats Bar -->
+        <tr>
+            <td class="stats-bar">
+                <div class="stat">
+                    <span class="stat-number">25+</span>
+                    <span class="stat-label">Years Exp</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Case Studies</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">40%</span>
+                    <span class="stat-label">Avg Efficiency</span>
+                </div>
+            </td>
+        </tr>
+        
+        <!-- Portfolio Gallery - Bento Grid -->
+        <tr>
+            <td class="bento-container">
+                <!-- Row 1: Featured Project -->
+                <div class="bento-row">
+                    <div class="bento-item bento-large">
+                        <div class="bento-overlay">
+                            <div class="project-meta">
+                                <span class="project-number">01</span>
+                                <span class="project-category cat-fullstack">Full-Stack</span>
+                            </div>
+                            <h3>E-Commerce Platform Redesign</h3>
+                            <p>Applied binary decision trees to optimize user paths, reducing checkout steps by 25%</p>
+                            <p class="project-tech">React • Node.js • Figma • A/B Testing</p>
+                            <span class="impact-badge">↑ 35% Conversion Rate</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 2: Two Medium Projects -->
+                <div class="bento-row">
+                    <div class="bento-item bento-medium">
+                        <div class="bento-overlay">
+                            <div class="project-meta">
+                                <span class="project-number">02</span>
+                                <span class="project-category cat-ui">UI/UX</span>
+                            </div>
+                            <h3>FinTech Dashboard</h3>
+                            <p>Real-time analytics interface with data-driven design iterations</p>
+                            <p class="project-tech">Figma • React • D3.js</p>
+                            <span class="impact-badge">↓ 40% Drop-off</span>
+                        </div>
+                    </div>
+                    <div class="bento-item bento-medium">
+                        <div class="bento-overlay">
+                            <div class="project-meta">
+                                <span class="project-number">03</span>
+                                <span class="project-category cat-branding">Branding</span>
+                            </div>
+                            <h3>Health Startup Identity</h3>
+                            <p>Complete brand system optimized for scalability across platforms</p>
+                            <p class="project-tech">Adobe Suite • Figma</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 3: Three Small Projects -->
+                <div class="bento-row">
+                    <div class="bento-item bento-small">
+                        <div class="bento-overlay">
+                            <div class="project-meta">
+                                <span class="project-number">04</span>
+                                <span class="project-category cat-mobile">Mobile</span>
+                            </div>
+                            <h3>iOS Health App</h3>
+                            <p>Intuitive tracking interface</p>
+                        </div>
+                    </div>
+                    <div class="bento-item bento-small">
+                        <div class="bento-overlay">
+                            <div class="project-meta">
+                                <span class="project-number">05</span>
+                                <span class="project-category cat-frontend">Front-End</span>
+                            </div>
+                            <h3>Portfolio Site</h3>
+                            <p>Custom Next.js build</p>
+                        </div>
+                    </div>
+                    <div class="bento-item bento-small">
+                        <div class="bento-overlay">
+                            <div class="project-meta">
+                                <span class="project-number">06</span>
+                                <span class="project-category cat-web">Web App</span>
+                            </div>
+                            <h3>SaaS Dashboard</h3>
+                            <p>Data visualization tool</p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        <!-- CTA -->
+        <tr>
+            <td class="cta-section">
+                <h2>Let's Discuss Your Next Project</h2>
+                <p>Bringing computational thinking to design challenges since 1999</p>
+                <a href="#" class="cta-button">View Full Case Studies</a>
+            </td>
+        </tr>
+        
+        <!-- Footer -->
+        <tr>
+            <td class="footer">
+                <div class="footer-links">
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Dribbble</a>
+                    <a href="#">GitHub</a>
+                    <a href="#">Resume</a>
+                </div>
+                <p style="color: #6b7280;">© 2024 Portfolio. IT Background • Design Focus • Computational Thinking</p>
+                <p><a href="#">hello@designer.com</a> • <a href="#">Schedule a Call</a></p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
