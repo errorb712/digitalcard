@@ -604,28 +604,104 @@ body::after{width:480px;height:480px;background:radial-gradient(circle,#ffe0f4,#
   transform: scale(1.2);
   color: #3a47d5;
 }
-.btn-group{display:flex;justify-content:center;align-items:center;gap:1rem}
-.btn-add-contact {
-  flex-grow: 1;
-  max-width: 240px;
-  background: linear-gradient(135deg, #f3f5ff, #fff);
-  color: #1a1a1a;
-  border: 1px solid rgba(230, 230, 240, 0.8);
-  border-radius: 14px;
-  padding: 1.1rem 1.5rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  box-shadow: 0 4px 15px rgba(130, 140, 255, 0.25);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+
+
+/* Container for both buttons to stay on the same line */
+.btn-group {
+    display: flex;
+    align-items: center;  /* Vertically align both buttons */
+    justify-content: center;  /* Center the buttons horizontally */
+    gap: 1rem;  /* Space between buttons */
+    flex-wrap: nowrap; /* Prevent wrapping of the buttons */
+    width: 100%; /* Ensure the container spans the full width */
 }
+
+/* Button "Add to Contacts" - default styles */
+.btn-add-contact {
+    background: linear-gradient(135deg, #f3f5ff, #fff);
+    color: #1a1a1a;
+    border: 1px solid rgba(230, 230, 240, 0.8);
+    border-radius: 14px;
+    padding: 1.1rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    box-shadow: 0 4px 15px rgba(130, 140, 255, 0.25);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    white-space: nowrap;  /* Prevent the text from wrapping */
+    text-overflow: ellipsis; /* Display ellipsis when text overflows */
+    width: 256px; /* Reduced width by 20% (from 320px to 256px) */
+    min-width: 220px; /* Ensure the button doesn't get too small */
+    max-width: 100%; /* Allow the button to be responsive up to its max width */
+    height: 60px; /* Set the height to match the icon button */
+}
+
+/* Icon button style - Adjusted to be rectangular */
+.btn-bottom-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 14px;  /* Rounded corners to make it more rectangular */
+    padding: 10px 20px;  /* Adjust padding to create a rectangular shape */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto;  /* Automatically adjusts width based on padding */
+    height: 60px;  /* Match height of "Add to Contacts" button */
+    font-size: 1.2rem;  /* Adjust font size to balance the icon size */
+}
+
+/* Mobile Styles - Center and suitable button width */
+@media (max-width: 768px) {
+    .btn-add-contact {
+        width: 100%;  /* Allow the button to take full width on mobile */
+        max-width: 256px; /* Keep the max-width consistent with reduced size */
+        font-size: 1.05rem; /* Same font size */
+        padding: 1.1rem 1.5rem; /* Same padding */
+        min-width: 220px; /* Ensure it doesn't shrink too much */
+        height: 60px; /* Keep consistent height on mobile */
+    }
+
+    /* Adjust icon button size for mobile */
+    .btn-bottom-icon {
+        width: auto;  /* Allow width to adjust based on padding */
+        height: 60px;  /* Keep height consistent */
+        font-size: 1rem;  /* Adjust font size to fit well */
+    }
+}
+
+/* Optional: Small screens (under 420px) */
+@media (max-width: 420px) {
+    .btn-add-contact {
+        width: 100%;  /* Ensure the button takes full width on very small screens */
+        max-width: 256px; /* Keep max-width consistent */
+        min-width: 220px; /* Ensure minimum width */
+        height: 60px; /* Keep consistent height */
+    }
+
+    .btn-bottom-icon {
+        width: auto;  /* Adjust icon button size */
+        height: 60px;  /* Keep consistent height */
+        font-size: 0.9rem;  /* Adjust font size to fit smaller screens */
+    }
+}
+
+
+
+
+
+
+
+
+
 
 .btn-add-contact::before {
   content: '';
