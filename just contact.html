@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Kevin Johnson - Digital Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+
+
+/* ---------- Footer Contact---------- */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-add-contact {
+  flex-grow: 1;
+  max-width: 240px;
+  background: linear-gradient(135deg, #f3f5ff, #fff);
+  color: #1a1a1a;
+  border: 1px solid rgba(230, 230, 240, 0.8);
+  border-radius: 14px;
+  padding: 1.1rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 15px rgba(130, 140, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-add-contact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e8ebff, #dde2ff);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.btn-add-contact:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(130, 140, 255, 0.4);
+  border-color: rgba(76, 93, 209, 0.3);
+}
+
+.btn-add-contact:hover::before {
+  opacity: 1;
+}
+
+.btn-add-contact:active {
+  transform: translateY(-1px) scale(0.99);
+  box-shadow: 0 6px 20px rgba(130, 140, 255, 0.3);
+}
+
+.btn-add-contact.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.btn-add-contact.success {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border-color: #28a745;
+}
+
+.btn-bottom-icon {
+  width: 56px;
+  height: 56px;
+  background: #fff;
+  border: 1px solid rgba(230, 230, 240, 0.8);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-bottom-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(76, 93, 209, 0.1) 0%, rgba(155, 119, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-bottom-icon:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(130, 140, 255, 0.35);
+  border-color: rgba(76, 93, 209, 0.3);
+}
+
+.btn-bottom-icon:hover::before {
+  opacity: 1;
+}
+
+.btn-bottom-icon:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 6px 18px rgba(130, 140, 255, 0.3);
+}
+
+.btn-bottom-icon svg {
+  width: 26px;
+  height: 26px;
+  color: #4c5dd1;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-bottom-icon:hover svg {
+  transform: scale(1.15);
+  color: #3a47d5;
+}
+
+.btn-add-contact svg {
+  width: 22px;
+  height: 22px;
+  color: #4c5dd1;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-add-contact:hover svg {
+  transform: scale(1.15);
+  color: #3a47d5;
+}
+
+/* Phone Icon Styles */
+.phone-section {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 24px 24px 0 0;
+  margin-bottom: -1px;
+  display: flex;
+  justify-content: center;
+}
+
+.info-icon.phone-icon {
+  cursor: pointer;
+}
+
+.phone-icon .icon-container {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f0f2ff, #ffffff);
+  box-shadow: 0 6px 20px rgba(76, 93, 209, 0.1);
+  overflow: visible;
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.phone-icon .icon {
+  width: 24px;
+  height: 24px;
+  color: #4c5dd1;
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.phone-icon .phone-pulse {
+  opacity: 0;
+  transform-origin: center;
+  transform: scale(0.8);
+  animation: pulse 2s infinite;
+  stroke: #4c5dd1;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.8);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(76, 93, 209, 0.1);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+  z-index: 0;
+}
+
+.phone-icon:hover .icon-container {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(76, 93, 209, 0.2);
+  background: linear-gradient(135deg, #e8ebff, #f8f9ff);
+}
+
+.phone-icon:hover .icon {
+  color: #3a4bc4;
+  transform: scale(1.1);
+}
+
+.phone-icon:hover .ripple-effect {
+  transform: scale(1.5);
+  opacity: 0.5;
+}
+
+.phone-icon:active .icon-container {
+  transform: translateY(1px);
+  box-shadow: 0 4px 15px rgba(76, 93, 209, 0.15);
+}
+
+/* Notification Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@media (max-width: 420px) {
+  body {
+    padding: 0;
+  }
+  
+  .demo-container {
+    max-width: 100%;
+  }
+  
+  .phone-section,
+  .bottom-actions {
+    border-radius: 0;
+  }
+}
+/* ---------- Footer Contact---------- */
+</style>
+</head>
+<body>
+
+
+    <div class="bottom-actions">
+      <div class="btn-group">
+        <button class="btn-add-contact" id="addContactBtn">
+          <svg class="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+          </svg>
+          <span id="btnText">Add to Contacts</span>
+        </button>
+        <div class="btn-bottom-icon" id="shareBtn">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v4h4v2h-4v4h-2v-4H7v-2h4V7z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span class="toast-message" id="toastMessage"></span>
+  </div>
+
+  <script>
+    // Contact data
+    const contactData = {
+      name: 'Kevin Johnson',
+      phone: '+1234567890',
+      email: 'kevin@example.com',
+      website: 'www.kevinjohnson.com',
+      title: 'Digital Marketing Specialist'
+    };
+
+    // Toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Add to Contacts functionality
+    document.getElementById('addContactBtn').addEventListener('click', function() {
+      const btn = this;
+      const btnText = document.getElementById('btnText');
+      const icon = btn.querySelector('svg');
+      
+      // Add loading state
+      btn.classList.add('loading');
+      icon.classList.add('spinning');
+      btnText.textContent = 'Adding...';
+      
+      // Simulate adding contact
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        btn.classList.add('success');
+        icon.classList.remove('spinning');
+        btnText.textContent = 'Added!';
+        
+        // Generate vCard
+        const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${contactData.name}
+TEL:${contactData.phone}
+EMAIL:${contactData.email}
+URL:${contactData.website}
+TITLE:${contactData.title}
+END:VCARD`;
+        
+        // Create download link
+        const blob = new Blob([vCard], { type: 'text/vcard' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${contactData.name.replace(' ', '_')}.vcf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+        showToast('Contact saved successfully!');
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          btn.classList.remove('success');
+          btnText.textContent = 'Add to Contacts';
+        }, 2000);
+      }, 1500);
+    });
+
+    // Share button functionality
+    document.getElementById('shareBtn').addEventListener('click', async function() {
+      const shareData = {
+        title: contactData.name,
+        text: `Connect with ${contactData.name} - ${contactData.title}`,
+        url: window.location.href
+      };
+      
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          showToast('Shared successfully!');
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            fallbackShare();
+          }
+        }
+      } else {
+        fallbackShare();
+      }
+    });
+
+    // Fallback share for browsers without native share
+    function fallbackShare() {
+      const shareUrl = window.location.href;
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast('Link copied to clipboard!');
+        }).catch(() => {
+          showToast('Unable to share');
+        });
+      } else {
+        // Fallback copy method
+        const textArea = document.createElement('textarea');
+        textArea.value = shareUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showToast('Link copied to clipboard!');
+        } catch (err) {
+          showToast('Unable to share');
+        }
+        document.body.removeChild(textArea);
+      }
+    }
+
+    // Phone icon click functionality
+    document.getElementById('phoneIcon').addEventListener('click', function() {
+      const phoneNumber = contactData.phone;
+      
+      // Check if device supports tel: links
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.location.href = `tel:${phoneNumber}`;
+      } else {
+        // For desktop, copy to clipboard
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(phoneNumber).then(() => {
+            showToast(`Phone number copied: ${phoneNumber}`);
+          });
+        } else {
+          showToast(`Phone: ${phoneNumber}`);
+        }
+      }
+    });
+
+    // Add ripple effect on click
+    const buttons = document.querySelectorAll('.btn-add-contact, .btn-bottom-icon, .phone-icon');
+    buttons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('div');
+        ripple.style.position = 'absolute';
+        ripple.style.width = '20px';
+        ripple.style.height = '20px';
+        ripple.style.background = 'rgba(76, 93, 209, 0.3)';
+        ripple.style.borderRadius = '50%';
+        ripple.style.pointerEvents = 'none';
+        ripple.style.transform = 'translate(-50%, -50%)';
+        ripple.style.animation = 'ripple-animation 0.6s ease-out';
+        
+        const rect = this.getBoundingClientRect();
+        ripple.style.left = (e.clientX - rect.left) + 'px';
+        ripple.style.top = (e.clientY - rect.top) + 'px';
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    // Add ripple animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple-animation {
+        to {
+          width: 100px;
+          height: 100px;
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Prevent default context menu on long press for mobile
+    buttons.forEach(button => {
+      button.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+    });
+  </script>
+</body>
+</html>
