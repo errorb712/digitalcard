@@ -1,0 +1,21 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore files from text editors or IDEs
+.vscode/
+.idea/
+
+# Ignore logs
+*.log
+
+# Ignore any temporary files
+*.tmp
+*.bak
+
+# Ignore build directories or compiled HTML
+build/
+dist/
+
+# Ignore environment files or any file containing sensitive data
+.env
+config.json
