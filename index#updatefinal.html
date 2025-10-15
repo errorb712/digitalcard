@@ -1343,135 +1343,149 @@ body::after{width:480px;height:480px;background:radial-gradient(circle,#ffe0f4,#
     title: 'Digital Designer Specialist'
   };
 
-  /**
-   * Generates a vCard (Virtual Contact File) string from the contactData object.
-   * @returns {string} The vCard data as a string.
-   */
-  function createVCard() {
-    return `BEGIN:VCARD
+  // Toast notification
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    toastMessage.textContent = message;
+    toast.classList.add('show');
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Add to Contacts functionality (mobile specific)
+  document.getElementById('addContactBtn').addEventListener('click', function() {
+    const btn = this;
+    const btnText = document.getElementById('btnText');
+    const icon = btn.querySelector('svg');
+
+    // Add loading state
+    btn.classList.add('loading');
+    icon.classList.add('spinning');
+    btnText.textContent = 'Adding...';
+
+    // Simulate adding contact
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.classList.add('success');
+      icon.classList.remove('spinning');
+      btnText.textContent = 'Added!';
+
+      // If on mobile, try adding directly (not possible in web browsers)
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        // Typically mobile devices can't add directly without a native app
+        showToast('Please manually add this contact to your phone.');
+      } else {
+        // Generate vCard for download
+        const vCard = `BEGIN:VCARD
 VERSION:3.0
 FN:${contactData.name}
-TEL;TYPE=CELL:${contactData.phone}
+TEL:${contactData.phone}
 EMAIL:${contactData.email}
 URL:${contactData.website}
 TITLE:${contactData.title}
 END:VCARD`;
-  }
 
-  /**
-   * Shows a temporary notification message on the screen.
-   * @param {string} message - The message to display.
-   */
-  function showToast(message) {
-    // This function assumes you have HTML elements with IDs 'toast' and 'toastMessage'.
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    if (toast && toastMessage) {
-      toastMessage.textContent = message;
-      toast.classList.add('show');
+        const blob = new Blob([vCard], { type: 'text/vcard' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${contactData.name.replace(' ', '_')}.vcf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        showToast('Contact saved successfully!');
+      }
+
+      // Reset button after 2 seconds
       setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-    } else {
-      console.log('Toast notification:', message);
-      alert(message); // Fallback for when toast elements are not found
-    }
-  }
-
-  /**
-   * Handles the 'Add to Contacts' button click.
-   * This function triggers a download of the .vcf file, which mobile OSes
-   * will automatically open with a prompt to save the contact.
-   */
-  document.getElementById('addContactBtn').addEventListener('click', function() {
-    const vCard = createVCard();
-    const blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8' });
-    const url = window.URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${contactData.name.replace(/[^a-z0-9]/gi, '_')}.vcf`; // Create a clean filename
-    
-    // Append, click, and remove the link to trigger the download
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    window.URL.revokeObjectURL(url); // Clean up the URL object
-    showToast('Contact file downloaded! Open it to save.');
-
-    // --- UI feedback (optional, but good for user experience) ---
-    const btn = this;
-    const btnText = document.getElementById('btnText');
-    btn.classList.add('success');
-    if(btnText) btnText.textContent = 'Downloaded!';
-    setTimeout(() => {
         btn.classList.remove('success');
-        if(btnText) btnText.textContent = 'Add to Contacts';
-    }, 2000);
+        btnText.textContent = 'Add to Contacts';
+      }, 2000);
+    }, 1500);
   });
 
-  /**
-   * Handles the 'Share' button click.
-   * It uses the Web Share API to share the contact as a .vcf file,
-   * which is ideal for apps like WhatsApp.
-   */
+  // Share button functionality (friendly for WhatsApp and vCard sharing)
   document.getElementById('shareBtn').addEventListener('click', async function() {
-    const vCard = createVCard();
-    const blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8' });
-    const file = new File([blob], `${contactData.name}.vcf`, { type: 'text/vcard;charset=utf-8' });
+    const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${contactData.name}
+TEL:${contactData.phone}
+EMAIL:${contactData.email}
+URL:${contactData.website}
+TITLE:${contactData.title}
+END:VCARD`;
+
+    // Create Blob for vCard
+    const blob = new Blob([vCard], { type: 'text/vcard' });
+    const url = window.URL.createObjectURL(blob);
 
     const shareData = {
-      files: [file],
-      title: contactData.name,
-      text: `Here is the contact for ${contactData.name}.`
+      title: `Contact: ${contactData.name}`,
+      text: `Contact Information for ${contactData.name}: ${contactData.phone}`,
+      url: `https://wa.me/?text=${encodeURIComponent(`Contact Information: ${contactData.name}, Phone: ${contactData.phone}, Email: ${contactData.email}`)}`
     };
 
-    // Check if the browser can share these files
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    if (navigator.share) {
       try {
         await navigator.share(shareData);
         showToast('Contact shared successfully!');
       } catch (err) {
         if (err.name !== 'AbortError') {
-          console.error('Share failed:', err);
-          showToast('Could not share contact.');
+          fallbackShare(url);
         }
       }
     } else {
-      // Fallback for browsers that don't support file sharing
-      fallbackShare();
+      fallbackShare(url);
     }
   });
 
-  /**
-   * Fallback share function for browsers without native file sharing support.
-   * Copies the contact details to the clipboard.
-   */
-  function fallbackShare() {
-    const contactInfo = `Name: ${contactData.name}\nPhone: ${contactData.phone}\nEmail: ${contactData.email}\nWebsite: ${contactData.website}`;
-    
+  // Fallback share for browsers without native share
+  function fallbackShare(vCardUrl) {
+    const contactInfo = `
+      Name: ${contactData.name}
+      Phone: ${contactData.phone}
+      Email: ${contactData.email}
+      Website: ${contactData.website}
+      Title: ${contactData.title}
+    `;
+
     if (navigator.clipboard) {
       navigator.clipboard.writeText(contactInfo).then(() => {
-        showToast('Contact info copied to clipboard!');
+        showToast('Contact information copied to clipboard!');
       }).catch(() => {
-        showToast('Unable to copy contact info.');
+        showToast('Unable to share');
       });
     } else {
-        // A simpler alert for very old browsers
-        alert('Sharing not supported. Contact info:\n' + contactInfo);
+      // Fallback copy method
+      const textArea = document.createElement('textarea');
+      textArea.value = contactInfo;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Contact information copied to clipboard!');
+      } catch (err) {
+        showToast('Unable to share');
+      }
+      document.body.removeChild(textArea);
     }
   }
 
-  /**
-   * Handles the phone icon click.
-   * Opens the dialer on mobile or copies the number on desktop.
-   */
+  // Phone icon click functionality
   document.getElementById('phoneIcon').addEventListener('click', function() {
     const phoneNumber = contactData.phone;
+
+    // Check if device supports tel: links
     if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
       window.location.href = `tel:${phoneNumber}`;
     } else {
+      // For desktop, copy to clipboard
       if (navigator.clipboard) {
         navigator.clipboard.writeText(phoneNumber).then(() => {
           showToast(`Phone number copied: ${phoneNumber}`);
@@ -1482,37 +1496,33 @@ END:VCARD`;
     }
   });
 
-  // --- Optional UI enhancements from your original file ---
-  
   // Add ripple effect on click
   const buttons = document.querySelectorAll('.btn-add-contact, .btn-bottom-icon, .phone-icon');
   buttons.forEach(button => {
     button.addEventListener('click', function(e) {
       const ripple = document.createElement('div');
-      ripple.className = 'ripple';
-      this.appendChild(ripple);
-      
+      ripple.style.position = 'absolute';
+      ripple.style.width = '20px';
+      ripple.style.height = '20px';
+      ripple.style.background = 'rgba(76, 93, 209, 0.3)';
+      ripple.style.borderRadius = '50%';
+      ripple.style.pointerEvents = 'none';
+      ripple.style.transform = 'translate(-50%, -50%)';
+      ripple.style.animation = 'ripple-animation 0.6s ease-out';
+
       const rect = this.getBoundingClientRect();
       ripple.style.left = (e.clientX - rect.left) + 'px';
       ripple.style.top = (e.clientY - rect.top) + 'px';
-      
+
+      this.appendChild(ripple);
+
       setTimeout(() => ripple.remove(), 600);
     });
   });
 
-  // Add ripple animation CSS
+  // Add ripple animation
   const style = document.createElement('style');
   style.textContent = `
-    .ripple {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: rgba(76, 93, 209, 0.3);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      animation: ripple-animation 0.6s ease-out;
-    }
     @keyframes ripple-animation {
       to {
         width: 100px;
@@ -1522,359 +1532,13 @@ END:VCARD`;
     }
   `;
   document.head.appendChild(style);
-</script>  <script>
-    // --- CONFIGURATION ---
-    const contactData = {
-      name: 'Tyraz Zaini (Digital Designer Specialist)',
-      phone: '+601173089330',
-      email: 'tyrazbea@gmail.com',
-      website: 'https://tyrazbeastudio.com',
-      title: 'Digital Designer Specialist'
-    };
 
-    // --- CORE LOGIC ---
-
-    /**
-     * Initializes the contact card UI and sets up event listeners.
-     */
-    function initializeCard() {
-      // Populate UI elements
-      document.getElementById('contactName').textContent = contactData.name.split('(')[0].trim();
-      document.getElementById('contactTitle').textContent = contactData.title;
-
-      // Attach event listeners
-      const addBtn = document.getElementById('addContactBtn');
-      const shareBtn = document.getElementById('shareBtn');
-      const phoneBtn = document.getElementById('phoneIcon');
-
-      if (addBtn) addBtn.addEventListener('click', handleAddContact);
-      if (shareBtn) shareBtn.addEventListener('click', handleShare);
-      if (phoneBtn) phoneBtn.addEventListener('click', handleCall);
-      
-      // Attach ripple effect to all buttons
-      document.querySelectorAll('button').forEach(button => {
-        button.addEventListener('click', createRipple);
-      });
-    }
-
-    /**
-     * Generates a vCard (Virtual Contact File) string.
-     * @returns {string} The vCard data as a string.
-     */
-    function createVCard() {
-      return `BEGIN:VCARD
-VERSION:3.0
-FN:${contactData.name}
-TEL;TYPE=CELL:${contactData.phone}
-EMAIL:${contactData.email}
-URL:${contactData.website}
-TITLE:${contactData.title}
-END:VCARD`;
-    }
-
-    /**
-     * Triggers a download of the .vcf file. On mobile, this prompts the user
-     * to save the contact directly to their address book.
-     */
-    function handleAddContact() {
-      const vCard = createVCard();
-      const blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-
-      link.href = url;
-      link.download = `${contactData.name.replace(/[^a-z0-9]/gi, '_')}.vcf`;
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      window.URL.revokeObjectURL(url);
-      showToast('Download started! Open the file to save contact.');
-    }
-
-    /**
-     * Shares the contact using the Web Share API if available.
-     * This is ideal for sharing to WhatsApp as a proper contact card.
-     */
-    async function handleShare() {
-      const vCard = createVCard();
-      const file = new File([vCard], `${contactData.name}.vcf`, { type: 'text/vcard;charset=utf-8' });
-
-      const shareData = {
-        files: [file],
-        title: contactData.name,
-        text: `Contact card for ${contactData.name}.`
-      };
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share(shareData);
-        } catch (err) {
-          if (err.name !== 'AbortError') {
-            console.error("Share failed:", err);
-            showToast('Error: Could not share contact.');
-          }
-        }
-      } else {
-        // Fallback for browsers without file sharing support.
-        showToast('File sharing not available. Copied to clipboard.');
-        fallbackShare();
-      }
-    }
-
-    /**
-     * Fallback for sharing: copies contact details to the clipboard.
-     */
-    function fallbackShare() {
-      const contactInfo = `Name: ${contactData.name}\nPhone: ${contactData.phone}\nEmail: ${contactData.email}`;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(contactInfo)
-          .then(() => showToast('Contact info copied to clipboard!'))
-          .catch(err => {
-            console.error("Clipboard copy failed:", err);
-            alert(`Could not copy. Please copy manually:\n\n${contactInfo}`);
-          });
-      }
-    }
-
-    /**
-     * Handles the call button click. Opens the dialer on mobile or copies on desktop.
-     */
-    function handleCall() {
-      const phoneNumber = contactData.phone;
-      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        window.location.href = `tel:${phoneNumber}`;
-      } else {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(phoneNumber).then(() => {
-            showToast(`Phone number copied: ${phoneNumber}`);
-          });
-        }
-      }
-    }
-
-    // --- UTILITY FUNCTIONS ---
-
-    /**
-     * Shows a notification message (toast).
-     * @param {string} message - The message to display.
-     */
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toastMessage');
-      if (toast && toastMessage) {
-        toastMessage.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => {
-          toast.classList.remove('show');
-        }, 3000);
-      } else {
-        alert(message); // Fallback for browsers without toast elements
-      }
-    }
-    
-    /**
-     * Creates a ripple effect on button click for visual feedback.
-     * @param {MouseEvent} event
-     */
-    function createRipple(event) {
-        const button = event.currentTarget;
-        const circle = document.createElement("span");
-        const diameter = Math.max(button.clientWidth, button.clientHeight);
-        const radius = diameter / 2;
-
-        circle.style.width = circle.style.height = `${diameter}px`;
-        circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-        circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-        circle.classList.add("ripple");
-
-        const ripple = button.getElementsByClassName("ripple")[0];
-        if (ripple) {
-            ripple.remove();
-        }
-        button.appendChild(circle);
-    }
-
-    // --- INITIALIZATION ---
-    // Run the script after the DOM is fully loaded.
-    document.addEventListener('DOMContentLoaded', initializeCard);
-
-  </script><script>
-  // --- CONFIGURATION: Your Contact Details ---
-  const contactData = {
-    name: 'Tyraz Zaini',
-    organization: 'Digital Designer Specialist', // Using ORG for better vCard compatibility
-    phone: '+601173089330',
-    email: 'tyrazbea@gmail.com',
-    website: 'https://tyrazbeastudio.com'
-  };
-
-  /**
-   * Main function to initialize the application.
-   * Runs once the DOM is fully loaded.
-   */
-  document.addEventListener('DOMContentLoaded', () => {
-    // Populate the card with contact details
-    document.getElementById('contactName').textContent = contactData.name;
-    document.getElementById('contactTitle').textContent = contactData.organization;
-
-    // Attach event listeners to buttons
-    document.getElementById('addContactBtn').addEventListener('click', handleSaveContact);
-    document.getElementById('shareBtn').addEventListener('click', handleShareContact);
-    document.getElementById('phoneBtn').addEventListener('click', handleCall);
-    
-    // Add ripple effect for all buttons for better UX
-    document.querySelectorAll('button').forEach(button => {
-      button.addEventListener('click', createRippleEffect);
+  // Prevent default context menu on long press for mobile
+  buttons.forEach(button => {
+    button.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
     });
   });
-
-  /**
-   * Generates a universally compatible vCard (version 3.0) string.
-   * This is the heart of the contact data generation.
-   * @returns {string} The vCard data as a string.
-   */
-  function createVCard() {
-    return `BEGIN:VCARD
-VERSION:3.0
-FN:${contactData.name}
-ORG:${contactData.organization}
-TEL;TYPE=CELL,VOICE:${contactData.phone}
-EMAIL:${contactData.email}
-URL:${contactData.website}
-END:VCARD`;
-  }
-
-  /**
-   * Handles the 'Save to Contacts' button click.
-   * This triggers a .vcf file download, which is the standard and most reliable
-   * method for prompting a user to save a contact on any mobile device.
-   */
-  function handleSaveContact() {
-    const vCard = createVCard();
-    const blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-
-    // Sanitize the name for use as a filename
-    const fileName = `${contactData.name.replace(/[^a-z0-9]/gi, '_')}.vcf`;
-    link.href = url;
-    link.setAttribute('download', fileName);
-    
-    // This is a programmatic click to trigger the download
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    window.URL.revokeObjectURL(url); // Clean up to free memory
-    showToast('Download started! Open the file to save.');
-  }
-
-  /**
-   * Handles the 'Share Contact Card' button click.
-   * Uses the modern Web Share API to share the contact as a file.
-   * This allows for a rich sharing experience in apps like WhatsApp.
-   */
-  async function handleShareContact() {
-    const vCard = createVCard();
-    const file = new File([vCard], `${contactData.name}.vcf`, { type: 'text/vcard;charset=utf-8' });
-
-    const shareData = {
-      files: [file],
-      title: contactData.name,
-      text: `Contact card for ${contactData.name}.`,
-    };
-
-    // Check if the browser can share files before attempting to
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share(shareData);
-        // Success is silent, as the user has completed the action.
-      } catch (error) {
-        // We ignore 'AbortError' which happens when the user cancels the share.
-        if (error.name !== 'AbortError') {
-          console.error('Web Share API Error:', error);
-          showToast('An error occurred while sharing.');
-        }
-      }
-    } else {
-      // If file sharing is not supported, we provide a helpful fallback.
-      showToast('File sharing not supported. Copied to clipboard.');
-      copyContactInfoToClipboard();
-    }
-  }
-
-  /**
-   * Fallback for browsers that don't support the Web Share API.
-   * Copies the contact information as plain text to the clipboard.
-   */
-  function copyContactInfoToClipboard() {
-    const contactInfo = `Name: ${contactData.name}\nPhone: ${contactData.phone}\nEmail: ${contactData.email}`;
-    
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(contactInfo)
-        .then(() => showToast('Contact info copied!'))
-        .catch(err => {
-          console.error('Clipboard fallback error:', err);
-          // If clipboard fails, we show the user the text to copy manually.
-          prompt('Please copy the text below:', contactInfo);
-        });
-    } else {
-      // For very old browsers or insecure contexts (http://)
-      prompt('Please copy the text below:', contactInfo);
-    }
-  }
-
-  /**
-   * Handles the 'Call' button. Initiates a call on mobile devices.
-   */
-  function handleCall() {
-    window.location.href = `tel:${contactData.phone}`;
-  }
-  
-  /**
-   * Utility to show a simple notification message.
-   * @param {string} message - The text to display in the toast.
-   */
-  function showToast(message) {
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    if (toast && toastMessage) {
-      toastMessage.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-    } else {
-      // Fallback if toast elements don't exist
-      alert(message);
-    }
-  }
-
-  /**
-   * Creates a visual ripple effect on button clicks for user feedback.
-   * @param {MouseEvent} event
-   */
-  function createRippleEffect(event) {
-    const button = event.currentTarget;
-    const circle = document.createElement("span");
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    const radius = diameter / 2;
-
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-    circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-    circle.classList.add("ripple");
-
-    // Remove any existing ripple to avoid clutter
-    const existingRipple = button.getElementsByClassName("ripple")[0];
-    if (existingRipple) {
-      existingRipple.remove();
-    }
-    
-    button.appendChild(circle);
-  }
 </script>
 
 
